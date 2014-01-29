@@ -2,7 +2,7 @@
 /* Configuration */
 
 var basePath ="/srv/";
-var serverPort = 8080;
+var serverPort = 12345;
 
 /* Imports */
 
