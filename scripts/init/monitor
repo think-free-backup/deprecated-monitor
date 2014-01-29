@@ -1,0 +1,46 @@
+#!/bin/bash
+
+export APP=monitor
+export NODE=/usr/local/bin/node
+export BASEPATH=/opt
+
+test -x $NODE || exit 0
+
+mkdir /var/log/node 2> /dev/null
+mkdir /var/run/node 2> /dev/null
+chmod 777 -R /var/run/node
+chmod 777 -R /var/log/node
+
+function start_app {
+
+  cd $BASEPATH/$APP
+  NODE_ENV=production nohup $NODE main.js >> /var/log/node/$APP.log 2>&1 & echo $! > /var/run/node/$APP.pid
+  #NODE_ENV=production nohup "$NODE" "main.js" >>"/var/log/node/$APP.log" 2>&1 & echo $! > "/var/run/node/$APP.pid"
+}
+
+export -f start_app
+
+function start_app_as_user {
+
+  su node -c "start_app"
+}
+
+function stop_app {
+
+  sudo kill `cat /var/run/node/$APP.pid`
+}
+
+case $1 in
+    start)
+      start_app_as_user ;;
+    stop)
+      stop_app ;;
+    restart)
+      stop_app
+      start_app_as_user
+      ;;
+    *)
+      echo "usage: $APP {start|stop}" ;;
+esac
+exit 0
+

@@ -1,0 +1,13 @@
+{
+  "name": "monitor",
+  "version" : "0.0.1",
+  "description": "Server monitor",
+  "author": "Christophe Meurice <meumeu1402@gmail.com>",
+  "dependencies" : {
+    "restify": "*",
+    "usage": "*"
+  },
+  "engine": {
+    "node" : ">= 0.8.8"
+  }
+}
