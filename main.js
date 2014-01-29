@@ -21,8 +21,6 @@ function start(app){
 
     var appString = basePath  + app  + "/main.js";
 
-    console.log("Starting : " + app);
-
     try{
         process = spawn("node", [ appString ] );
     }
@@ -44,7 +42,6 @@ function start(app){
 
 
 function stop(app){
-    console.log("Stopping : " + app);
 
     var proc = processList[app];
     processList[app] = undefined;
