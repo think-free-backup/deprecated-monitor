@@ -13,6 +13,8 @@ var fs = require('fs');
 
 var processList = new Array();
 
+setInterval(function(){update();}, 21600000);
+
 /* Start/Stop application */
 
 function start(app){
@@ -40,12 +42,34 @@ function start(app){
     processList[app] = process;
 }
 
-
 function stop(app){
 
     var proc = processList[app];
     processList[app] = undefined;
     proc.kill('SIGTERM');
+}
+
+function restart(app){
+
+    stop(app);
+    start(app);
+}
+
+/* Update applications */
+
+function update(){
+
+    fs.readdir(basePath, function(err, files){
+     
+        for(var idx in files){
+
+            var file = files[idx];
+
+            console.log("Processing update for " + file);
+
+            // Update /srv/file if needed
+        }
+    });
 }
 
 /* Server functions  */
@@ -60,6 +84,12 @@ function getStop(req, res, next) {
 
     stop(req.params.name);
     res.send('Stopping ' + req.params.name);
+}
+
+function getRestart(req, res, next){
+
+    restart(req.params.name);
+    res.send('Restarting ' + req.params.name);
 }
 
 function getStatus(req, res, next) {
