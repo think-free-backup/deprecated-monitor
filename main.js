@@ -7,6 +7,7 @@ var serverPort = 12345;
 /* Imports */
 
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var restify = require('restify');
 var usage = require('usage');
 var fs = require('fs');
@@ -34,7 +35,7 @@ function start(app){
     process.on('close', function(code, signal){
     
         if (processList[app] !== undefined){
-        console.log("Respawning : " + app);
+            console.log("Respawning : " + app);
             start(app);
         }
     });
@@ -67,7 +68,15 @@ function update(){
 
             console.log("Processing update for " + file);
 
-            // Update /srv/file if needed
+            exec("cd /srv/" + file + "; git pull --dry-run | grep -q -v 'Already up-to-date.' && echo 'NEEDRESTART' && git pull && npm install", function(error, stdout, stderr){
+
+                console.log(stdout);
+
+                exec("cd /srv/" + file + "/application; git pull --dry-run | grep -q -v 'Already up-to-date.' && echo 'NEEDRESTART' && git pull && npm install", function(error, stdout, stderr){
+
+                    console.log(stdout);
+                });
+            });
         }
     });
 }
