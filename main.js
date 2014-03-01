@@ -68,11 +68,11 @@ function update(){
 
             console.log("Processing update for " + file);
 
-            exec("cd /srv/" + file + "; git pull --dry-run | grep -q -v 'Already up-to-date.' && echo 'NEEDRESTART' && git pull && npm install", function(error, stdout, stderr){
+            exec("cd /srv/" + file + "; git pull --dry-run | grep 'Already up-to-dats'; if [ $? -ne "0" ]; then git pull; npm install; echo 'NEEDRESTART'; fi", function(error, stdout, stderr){
 
                 console.log(stdout);
 
-                exec("cd /srv/" + file + "/application; git pull --dry-run | grep -q -v 'Already up-to-date.' && echo 'NEEDRESTART' && git pull && npm install", function(error, stdout, stderr){
+                exec("cd /srv/" + file + "/application; git pull --dry-run | grep 'Already up-to-dats'; if [ $? -ne "0" ]; then git pull; npm install; echo 'NEEDRESTART'; fi", function(error, stdout, stderr){
 
                     console.log(stdout);
                 });
