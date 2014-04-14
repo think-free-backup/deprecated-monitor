@@ -8,5 +8,5 @@ cp scripts/init/monitor /etc/init.d/
 sed -i "s|export BASEPATH=/opt|export BASEPATH=$PT|" /etc/init.d/monitor
 chmod +x /etc/init.d/monitor
 update-rc.d monitor defaults
-
+npm install
 /etc/init.d/monitor start
