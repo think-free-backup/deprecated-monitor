@@ -27,7 +27,7 @@ function start_app_as_user {
 
 function stop_app {
 
-  sudo kill `cat /var/run/node/$APP.pid`
+  kill `cat /var/run/node/$APP.pid`
 }
 
 case $1 in
